@@ -1,0 +1,16 @@
+:root {
+  --color-cerulean: #01a1b7;
+  --color-admiral-blue: #2e4765;
+
+  --app-container-spacing: 20px;
+}
+
+/* Overriding MUI opacity for buttons typography */
+p.MuiTypography-body2 {
+  opacity: 1;
+}
+
+/* Toaster */
+.toast-message {
+  text-transform: capitalize !important;
+}

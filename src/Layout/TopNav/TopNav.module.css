@@ -1,0 +1,17 @@
+.main {
+    height: 70px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 17px;
+    background: #cfd6ff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navButtons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
