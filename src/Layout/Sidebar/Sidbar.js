@@ -50,6 +50,9 @@ const RenderContent = ({isOpenSidebar}) => {
                             <ListItemText primary={component.title} sx={{ opacity: isOpenSidebar ? 1 : 0,
                             "& .css-zelrgz-MuiTypography-root":{
                                 color:'inherit'
+                            },
+                            "& .MuiTypography-root":{
+                                color:'inherit'
                             }}} />
                         </ListItemButton>
                     </ListItem>
