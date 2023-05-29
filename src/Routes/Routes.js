@@ -3,7 +3,14 @@ import Home from "../Pages/Home";
 
 // Icons
 import HomeIcon from '@mui/icons-material/Home';
+import AdbIcon from '@mui/icons-material/Adb';
+import AddToHomeScreenIcon from '@mui/icons-material/AddToHomeScreen';
+import InfoIcon from '@mui/icons-material/Info';
+
+//Components
 import AboutUs from "../Pages/AboutUs";
+import AddAppDetails from "../Pages/AddAppDetails";
+import AppsDetails from "../Pages/AppsDetails";
 
 export const routes = [
     {
@@ -11,27 +18,39 @@ export const routes = [
         icon : <HomeIcon/>,
         path : '/',
         component: <Home/>,
-        isVisibleOnSidebar : true
-    },
-    {
-        title : 'AboutUs',
-        icon : <HomeIcon/>,
-        path : '/',
-        component: <AboutUs/>,
-        isVisibleOnSidebar : true
+        isVisibleOnSidebar : true,
+        isNeedAuthenticat : true,
     },
     {
         title : 'Home',
         icon : <HomeIcon/>,
-        path : '/',
-        component: <Home/>,
-        isVisibleOnSidebar : true
+        path : '/appsDetails/edit/:appId',
+        component: <AddAppDetails isEdit={true}/>,
+        isVisibleOnSidebar : false,
+        isNeedAuthenticat : false
+    },
+    {
+        title : 'Add App Details',
+        icon : <AddToHomeScreenIcon/>,
+        path : '/addAppDetails',
+        component: <AddAppDetails/>,
+        isVisibleOnSidebar : true,
+        isNeedAuthenticat : false
+    },
+    {
+        title : 'Apps Details',
+        icon : <AdbIcon/>,
+        path : '/appsDetails',
+        component: <AppsDetails/>,
+        isVisibleOnSidebar : true,
+        isNeedAuthenticat : true
     },
     {
         title : 'AboutUs',
-        icon : <HomeIcon/>,
-        path : '/',
+        icon : <InfoIcon/>,
+        path : '/aboutUs',
         component: <AboutUs/>,
-        isVisibleOnSidebar : true
-    }
+        isVisibleOnSidebar : true,
+        isNeedAuthenticat : true
+    },
 ];

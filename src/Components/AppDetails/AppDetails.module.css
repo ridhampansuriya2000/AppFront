@@ -1,0 +1,34 @@
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.childObj{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.fieldsBox{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sectionBox{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.addFieldBtn{
+    display: flex;
+    margin-top: 10px;
+}
+
+.addSection{
+    margin-top: 10px;
+}

@@ -1,0 +1,82 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background: #f3f4f8;
+}
+
+.infoContainer{
+display: flex;
+width: 50%;
+}
+
+.headingBox{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.heading3{
+    font-family: 'Public Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    color: #212B36;
+}
+
+.contentText{
+    font-family: 'Public Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #637381;
+}
+
+.formContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 50%;
+    background: #ffffff;
+}
+
+.formBox{
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+}
+
+.fieldBox{
+    display: flex;
+    flex-direction: column;
+    /*justify-content: flex-start;*/
+    align-items: flex-start;
+    gap: 5PX;
+    margin-top: 15px;
+}
+
+.checkBoxControler{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+.forgotPassword{
+    font-family: 'Public Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: right;
+    color: #1184ff;
+}
+
+.linkText{
+    cursor: pointer;
+    color: #1184ff;
+    font-weight: 500;
+}

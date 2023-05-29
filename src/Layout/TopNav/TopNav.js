@@ -1,13 +1,11 @@
 import React from "react";
-import styles from './TopNav.module.css';
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router";
 
 import AccountOutlinedIcon from '@mui/icons-material/AccountCircle';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MenuIcon from '@mui/icons-material/Menu';
-import { pink, indigo } from '@mui/material/colors';
-import useMediaQuery from '@mui/material/useMediaQuery';
-
-import Box from '@mui/material/Box';
+import { indigo } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,13 +16,19 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import {styled} from "@mui/material";
 
+import {logOutAction} from "../../Store/actions/authAction";
+import styles from './TopNav.module.css';
+
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
    color : '#22232a'
 }));
 
-const  TopNav = ({drawerHandler}) =>{
+const  TopNav = ({drawerHandler, ...childProps}) =>{
 
+    const { isMobile} = childProps;
+    const dispatch = useDispatch();
+    const navigate = useNavigate ();
     // menu
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -35,7 +39,15 @@ const  TopNav = ({drawerHandler}) =>{
         setAnchorEl(null);
     };
 
-    const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+    const handleLogOut = async () =>{
+        await dispatch(logOutAction({
+            callBackFun : () => {
+                localStorage.removeItem('token');
+                navigate('/login');
+            }
+        }));
+        handleClose();
+    }
 
     return (
         <div className={styles.main}>
@@ -85,23 +97,23 @@ const  TopNav = ({drawerHandler}) =>{
                     <StyledMenuItem onClick={handleClose}>
                         <Avatar /> Profile
                     </StyledMenuItem>
-                    <StyledMenuItem onClick={handleClose}>
-                        <Avatar /> My account
-                    </StyledMenuItem>
-                    <Divider />
-                    <StyledMenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                            <PersonAdd fontSize="small" />
-                        </ListItemIcon>
-                        Add another account
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                            <Settings fontSize="small" />
-                        </ListItemIcon>
-                        Settings
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={handleClose}>
+                    {/*<StyledMenuItem onClick={handleClose}>*/}
+                    {/*    <Avatar /> My account*/}
+                    {/*</StyledMenuItem>*/}
+                    {/*<Divider />*/}
+                    {/*<StyledMenuItem onClick={handleClose}>*/}
+                    {/*    <ListItemIcon>*/}
+                    {/*        <PersonAdd fontSize="small" />*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    Add another account*/}
+                    {/*</StyledMenuItem>*/}
+                    {/*<StyledMenuItem onClick={handleClose}>*/}
+                    {/*    <ListItemIcon>*/}
+                    {/*        <Settings fontSize="small" />*/}
+                    {/*    </ListItemIcon>*/}
+                    {/*    Settings*/}
+                    {/*</StyledMenuItem>*/}
+                    <StyledMenuItem onClick={handleLogOut}>
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>

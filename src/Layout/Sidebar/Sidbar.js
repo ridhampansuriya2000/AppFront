@@ -10,31 +10,35 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import styles from './Sidebar.module.css';
 import {routes} from '../../Routes/Routes';
+import {Outlet, Link, useLocation} from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close';
 
 const DRAWER_WIDTH = 300;
 
-const RenderContent = ({isOpenSidebar}) => {
+const RenderContent = ({isOpenSidebar, location}) => {
     return (
-        <Box sx={{color:' #e4e8ff'}}>
-            <Divider />
+        <Box sx={{color:' #e4e8ff', marginTop:'30px'}}>
+            {/*<Divider />*/}
             <List>
                 {(routes).filter(item => item.isVisibleOnSidebar ).map((component, index) => (
+                    <Link to={component.path} style={{color: 'inherit', textDecoration: 'none'}}>
                     <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                         <ListItemButton
                             sx={{
                                 width : '96%',
                                 minHeight: 48,
-                                margin : '0% 2%',
+                                margin : '1% 2%',
                                 borderRadius : '10px',
                                 justifyContent: isOpenSidebar ? 'initial' : 'center',
                                 px: 2.5,
                                 "&:hover" : {
                                     background : '#cfd6ff',
                                     color: '#3f51b5'
-                                }
+                                },
+                                background : '/'+(location?.pathname)?.split('/')[1] === component?.path ? '#cfd6ff' : '',
+                                color : '/'+(location?.pathname)?.split('/')[1] === component?.path ? '#3f51b5' : '',
                             }}
                         >
                             <ListItemIcon
@@ -56,34 +60,11 @@ const RenderContent = ({isOpenSidebar}) => {
                             }}} />
                         </ListItemButton>
                     </ListItem>
+                    </Link>
                 ))}
             </List>
             <Divider color='#e4e8ff'/>
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: isOpenSidebar ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: isOpenSidebar ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                    color:' #e4e8ff'
-                                }}
-                            >
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} sx={{ opacity: isOpenSidebar ? 1 : 0, color:' #e4e8ff' }} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
+
         </Box>
     )
 }
@@ -133,8 +114,13 @@ const LeftDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'op
     }),
 );
 
-const Sidebar = ({isOpenSidebar, onCloseSidebar}) => {
-    const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+const Sidebar = ({isOpenSidebar, onCloseSidebar, ...childProps}) => {
+    const {location, isMobile} = childProps;
+
+    React.useEffect(()=>{
+        console.log("params",location);
+        console.log("childProps",childProps);
+    },[location]);
     return (
         <div className={styles.main}>
             {isMobile &&
@@ -150,13 +136,33 @@ const Sidebar = ({isOpenSidebar, onCloseSidebar}) => {
                     },
                 }}
             >
-                <RenderContent isOpenSidebar={isOpenSidebar}/>
+                <Box sx={{
+                    display:'flex',
+                    justifyContent:'flex-end',
+                    alignItems:'center',
+                    color:'#e4e8ff',
+                    height:'70px',
+                }}>
+                    <CloseIcon fontSize='large'
+                               color={'inherit'}
+                               sx={{marginRight:'20px',cursor:'pointer',}}
+                               onClick={onCloseSidebar}
+                    />
+                </Box>
+                <RenderContent
+                    isOpenSidebar={isOpenSidebar}
+                    currentRoute = {location?.pathname}
+                    location={location}
+                />
             </Drawer>}
 
             {!isMobile &&
             <LeftDrawer variant="permanent" open={isOpenSidebar}>
-                {/*{renderContent(isOpenSidebar)}*/}
-                <RenderContent isOpenSidebar={isOpenSidebar}/>
+                <RenderContent
+                    isOpenSidebar={isOpenSidebar}
+                    currentRoute = {location?.pathname}
+                    location={location}
+                />
             </LeftDrawer>}
         </div>
     )

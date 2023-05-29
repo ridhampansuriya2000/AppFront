@@ -1,0 +1,4 @@
+export const GET_APPS_DATA = 'GET_APPS_DATA';
+export const CREATE_APPS_DATA = 'CREATE_APPS_DATA';
+export const GET_APP_DATA = 'GET_APP_DATA';
+export const UPDATE_APPS_DATA = 'UPDATE_APPS_DATA';

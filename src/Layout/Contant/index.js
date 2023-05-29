@@ -1,1 +1,1 @@
-export {default} from './Contant';
+export {default} from './Content';

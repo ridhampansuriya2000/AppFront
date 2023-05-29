@@ -1,0 +1,1 @@
+export const API_RESPONSES = "API_RESPONSES";

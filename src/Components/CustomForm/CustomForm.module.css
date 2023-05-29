@@ -1,0 +1,16 @@
+
+.buttons{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+}
+
+.pageHandlerButtons{
+    display: flex;
+    gap: 10px;
+}
+
+.formHandlerBtn{
+    display: flex;
+    gap: 10px;
+}

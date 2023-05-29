@@ -1,6 +1,12 @@
 import { createTheme,  } from '@mui/material/styles';
 
 export const theme = createTheme({
+  palette:{
+    common:{
+      darkColor:'#515989',
+      lightColor:'#e4e8ff'
+    }
+  },
   typography: {
     fontFamily: ['Poppins', 'Roboto', 'sans-serif'].join(','),
     h1: {
