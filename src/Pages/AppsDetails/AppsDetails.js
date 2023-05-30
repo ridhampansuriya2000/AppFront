@@ -25,8 +25,8 @@ const AppsDetails = () =>{
     }));
 
     React.useEffect(()=>{
-        dispatch(getAppsDataAction({params: createdBy}))
-    },[]);
+        if(createdBy) dispatch(getAppsDataAction({params: createdBy}))
+    },[createdBy]);
 
     const deleteApp = async (id) =>{
         await dispatch(deleteAppsDetailsAction({

@@ -53,4 +53,12 @@ export const routes = [
         isVisibleOnSidebar : true,
         isNeedAuthenticat : true
     },
+    {
+        title : 'Logout',
+        icon : <InfoIcon/>,
+        // path : '/aboutUs',
+        // component: <AboutUs/>,
+        isVisibleOnSidebar : true,
+        isNeedAuthenticat : true
+    },
 ];

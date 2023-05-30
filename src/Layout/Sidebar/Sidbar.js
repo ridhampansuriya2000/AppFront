@@ -125,7 +125,7 @@ const Sidebar = ({isOpenSidebar, onCloseSidebar, ...childProps}) => {
         <div className={styles.main}>
             {isMobile &&
             <Drawer
-                open={isOpenSidebar}
+                open={!isOpenSidebar}
                 onClose={onCloseSidebar}
                 anchor='right'
                 PaperProps={{
@@ -150,7 +150,7 @@ const Sidebar = ({isOpenSidebar, onCloseSidebar, ...childProps}) => {
                     />
                 </Box>
                 <RenderContent
-                    isOpenSidebar={isOpenSidebar}
+                    isOpenSidebar={!isOpenSidebar}
                     currentRoute = {location?.pathname}
                     location={location}
                 />
