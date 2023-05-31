@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import styles from './AppsDetails.module.css';
 import {deleteAppsDetailsAction, getAppsDataAction} from "../../Store/actions/appsDataAction";
 import {useDispatch, useSelector} from "react-redux";
+import {BASE_URL} from "../../utils/api/config";
 
 function modifyData(data) {
     return data.map((item)=>{
@@ -52,7 +53,7 @@ const AppsDetails = () =>{
                     <span
                         class={styles.tooltip}
                         onClick={()=>{
-                            navigator.clipboard.writeText(value);
+                            navigator.clipboard.writeText(`${BASE_URL}app/appDetails/${value}`);
                             let tooltip = document.getElementById(`myTooltip${index}`);
                             tooltip.innerHTML = "Copied ";
                         }}
