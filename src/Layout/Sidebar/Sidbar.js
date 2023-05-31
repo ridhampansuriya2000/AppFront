@@ -8,22 +8,23 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import styles from './Sidebar.module.css';
-import {routes} from '../../Routes/Routes';
-import {Outlet, Link, useLocation} from "react-router-dom";
+import {bottomRoutes, routes} from '../../Routes/Routes';
+import {Outlet, Link, useLocation, useNavigate} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
+import Logout from "@mui/material/SvgIcon/SvgIcon";
+import {logOutAction} from "../../Store/actions/authAction";
+import {useDispatch} from "react-redux";
 
 const DRAWER_WIDTH = 300;
 
-const RenderContent = ({isOpenSidebar, location}) => {
+const RenderContent = ({isOpenSidebar, location, onCloseSidebar}) => {
     return (
-        <Box sx={{color:' #e4e8ff', marginTop:'30px'}}>
+        <Box sx={{color:'#e4e8ff', marginTop:'30px'}}>
             {/*<Divider />*/}
             <List>
                 {(routes).filter(item => item.isVisibleOnSidebar ).map((component, index) => (
-                    <Link to={component.path} style={{color: 'inherit', textDecoration: 'none'}}>
+                    <Link to={component.path} style={{color: 'inherit', textDecoration: 'none'}} onClick={onCloseSidebar}>
                     <ListItem key={index} disablePadding sx={{ display: 'block' }}>
                         <ListItemButton
                             sx={{
@@ -60,6 +61,57 @@ const RenderContent = ({isOpenSidebar, location}) => {
                             }}} />
                         </ListItemButton>
                     </ListItem>
+                    </Link>
+                ))}
+            </List>
+            <Divider color='#e4e8ff'/>
+
+        </Box>
+    )
+};
+
+const SidebarBottomContent = ({isOpenSidebar, location, methods}) => {
+    return (
+        <Box sx={{color:'#e4e8ff', marginTop:'30px'}}>
+            <List>
+                {(bottomRoutes).filter(item => item.isVisibleOnSidebar ).map((component, index) => (
+                    <Link style={{color: 'inherit', textDecoration: 'none'}} onClick={methods.find((item)=> item.name === component.title)?.method}>
+                        <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+                            <ListItemButton
+                                sx={{
+                                    width : '96%',
+                                    minHeight: 48,
+                                    margin : '1% 2%',
+                                    borderRadius : '10px',
+                                    justifyContent: isOpenSidebar ? 'initial' : 'center',
+                                    px: 2.5,
+                                    "&:hover" : {
+                                        background : '#cfd6ff',
+                                        color: '#3f51b5'
+                                    },
+                                    background : '/'+(location?.pathname)?.split('/')[1] === component?.path ? '#cfd6ff' : '',
+                                    color : '/'+(location?.pathname)?.split('/')[1] === component?.path ? '#3f51b5' : '',
+                                }}
+                            >
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: isOpenSidebar ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                        color:'inherit'
+                                    }}
+                                >
+                                    {component.icon}
+                                </ListItemIcon>
+                                <ListItemText primary={component.title} sx={{ opacity: isOpenSidebar ? 1 : 0,
+                                    "& .css-zelrgz-MuiTypography-root":{
+                                        color:'inherit'
+                                    },
+                                    "& .MuiTypography-root":{
+                                        color:'inherit'
+                                    }}} />
+                            </ListItemButton>
+                        </ListItem>
                     </Link>
                 ))}
             </List>
@@ -116,11 +168,24 @@ const LeftDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'op
 
 const Sidebar = ({isOpenSidebar, onCloseSidebar, ...childProps}) => {
     const {location, isMobile} = childProps;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    React.useEffect(()=>{
-        console.log("params",location);
-        console.log("childProps",childProps);
-    },[location]);
+    const methods = [
+        {
+            name : 'Logout',
+            method: ()=> {
+                dispatch(logOutAction({
+                callBackFun : () => {
+                    localStorage.removeItem('token');
+                    navigate('/login');
+                }
+            }));
+                localStorage.removeItem('token');
+            },
+        }
+    ]
+
     return (
         <div className={styles.main}>
             {isMobile &&
@@ -133,10 +198,14 @@ const Sidebar = ({isOpenSidebar, onCloseSidebar, ...childProps}) => {
                         width: DRAWER_WIDTH,
                         boxSizing: 'border-box',
                         backgroundColor:'#515989',
+                        display:'flex',
+                        flexDirection:'column',
+                        justifyContent:'space-between'
                     },
                 }}
             >
-                <Box sx={{
+                <span>
+                    <Box sx={{
                     display:'flex',
                     justifyContent:'flex-end',
                     alignItems:'center',
@@ -149,10 +218,18 @@ const Sidebar = ({isOpenSidebar, onCloseSidebar, ...childProps}) => {
                                onClick={onCloseSidebar}
                     />
                 </Box>
-                <RenderContent
+                    <RenderContent
+                        isOpenSidebar={!isOpenSidebar}
+                        currentRoute = {location?.pathname}
+                        location={location}
+                        onCloseSidebar={onCloseSidebar}
+                    />
+                </span>
+                <SidebarBottomContent
                     isOpenSidebar={!isOpenSidebar}
                     currentRoute = {location?.pathname}
                     location={location}
+                    methods={methods}
                 />
             </Drawer>}
 

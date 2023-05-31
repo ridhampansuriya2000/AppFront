@@ -6,7 +6,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import AdbIcon from '@mui/icons-material/Adb';
 import AddToHomeScreenIcon from '@mui/icons-material/AddToHomeScreen';
 import InfoIcon from '@mui/icons-material/Info';
-
+import Logout from "@mui/icons-material/Logout";
 //Components
 import AboutUs from "../Pages/AboutUs";
 import AddAppDetails from "../Pages/AddAppDetails";
@@ -53,12 +53,14 @@ export const routes = [
         isVisibleOnSidebar : true,
         isNeedAuthenticat : true
     },
+];
+
+export const bottomRoutes = [
     {
         title : 'Logout',
-        icon : <InfoIcon/>,
-        // path : '/aboutUs',
-        // component: <AboutUs/>,
+        icon : <Logout fontSize="small" />,
         isVisibleOnSidebar : true,
         isNeedAuthenticat : true
     },
 ];
+
