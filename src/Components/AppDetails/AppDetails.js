@@ -5,10 +5,28 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import styles from './AppDetails.module.css';
 import Grid from "@mui/material/Grid";
 
+
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import IosSwitch from "../../Common/View/IosSwitch";
+
 const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, setDetailsTitle, detailsTitle, sectionData, setSectionData, pageData, setPageData}) =>{
     // const [detailsTitle,setDetailsTitle] = React.useState('');
     // const [pageData,setPageData] = React.useState(data?.fields);
     // const [sectionData,setSectionData] = React.useState(data?.sections ?? []);
+    const [age, setAge] = React.useState('');
+    const handleChange = (event) => {
+        setAge(event.target.value);
+        setAppData((preState)=>{
+            let arr = preState;
+            arr.splice(currentPage,1,{...preState[currentPage], fields:pageData, sections:sectionData, detailsTitle:detailsTitle, fieldType : event.target.value});
+            console.log("log in app Details",[...arr]);
+            return [...arr];
+        })
+    };
 
     const disableCheacker = () =>{
         let obj = { title : false, addField : false, addSection : false}
@@ -28,7 +46,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
     React.useEffect(()=>{
         setAppData((preState)=>{
             let arr = preState;
-            arr.splice(currentPage,1,{...preState[currentPage], fields:pageData, sections:sectionData, detailsTitle:detailsTitle});
+            arr.splice(currentPage,1,{...preState[currentPage], fields:pageData, sections:sectionData, detailsTitle:detailsTitle, fieldType : 'string'});
             console.log("log in app Details",[...arr]);
             return [...arr];
         })
@@ -79,7 +97,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                     onChange={(e)=>setPageData((preState)=>{
                         let val = e.target.value?.replace(' ','');
                         let arr = preState;
-                        arr.splice(index, 1, [val,preState[index][1]]);
+                        arr.splice(index, 1, [val,preState[index][1],preState[index][2]]);
                         return [...arr];
                     })}
                     error={pageData.some((filed,i)=> (filed[0] === item[0]) && i !== index)}
@@ -89,16 +107,26 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                 <Grid
                     xl={4} lg={4} md={6} sm={12} xs={12} item
                 >
-                <TextField
+                { pageData[index][2] === 'string' ?
+                    <TextField
                     label="Value"
                     fullWidth
                     value={item[1]}
                     onChange={(e)=>setPageData((preState)=>{
                         let arr = preState;
-                        arr.splice(index, 1, [preState[index][0],e.target.value]);
+                        arr.splice(index, 1, [preState[index][0],e.target.value,preState[index][2]]);
+                        return [...arr];
+                    })}
+                /> :
+                <IosSwitch
+                    value={item[1]}
+                    onChange={(e)=>setPageData((preState)=>{
+                        let arr = preState;
+                        arr.splice(index, 1, [preState[index][0],e.target.checked,preState[index][2]]);
                         return [...arr];
                     })}
                 />
+                }
                 </Grid>
                 {currentPage > 0 && <Grid
                     xl={4} lg={4} md={6} sm={12} xs={12} item
@@ -123,8 +151,28 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
             >
         <Button
             disabled={disableCheacker()?.addField || !currentPage}
-            onClick={()=>setPageData((preState)=>([...preState,['','']]))}
+            onClick={()=>setPageData((preState)=>([...preState,['','',appData[currentPage]?.fieldType]]))}
         > Add field</Button>
+            </Grid>
+            <Grid
+                xl={4} lg={4} md={6} sm={12} xs={12} item
+            >
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+                <Select
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    value={appData[currentPage]?.fieldType}
+                    label="Age"
+                    onChange={handleChange}
+                >
+                    <MenuItem value="">
+                        <em>None</em>
+                    </MenuItem>
+                    <MenuItem value='string'>Text</MenuItem>
+                    <MenuItem value='boolean'>boolean</MenuItem>
+                </Select>
+                </FormControl>
             </Grid>
         </Grid>
 
@@ -186,7 +234,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                                         ...preState[sectionIndex],
                                         fields : (()=>{
                                             let tempArr = preState[sectionIndex]?.fields;
-                                            tempArr.splice(fieldIndex,1,[val,elm[1]])
+                                            tempArr.splice(fieldIndex,1,[val,elm[1],elm[2]])
                                             // [...preState[sectionIndex],e.target.value,preState[sectionIndex][fieldIndex][1]]
                                             return [...tempArr]
                                         })()
@@ -201,6 +249,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                                 className={styles.fieldsBox}
                                 xl={4} lg={4} md={6} sm={12} xs={12} item
                             >
+                        { item?.fields[fieldIndex][2] === 'string' ?
                             <TextField
                                 label='value'
                                 fullWidth
@@ -211,13 +260,28 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                                         ...preState[sectionIndex],
                                         fields : (()=>{
                                             let tempArr = preState[sectionIndex]?.fields;
-                                            tempArr.splice(fieldIndex,1,[elm[0],e.target.value])
+                                            tempArr.splice(fieldIndex,1,[elm[0],e.target.value,elm[2]])
                                             return [...tempArr]
                                         })()
                                     });
                                     return [...arr];
                                 })}
-                            />
+                            /> :
+                            <IosSwitch
+                                value={item[1]}
+                                onChange={(e)=>setSectionData((preState)=>{
+                                    let arr = preState;
+                                    arr.splice(sectionIndex, 1, {
+                                        ...preState[sectionIndex],
+                                        fields : (()=>{
+                                            let tempArr = preState[sectionIndex]?.fields;
+                                            tempArr.splice(fieldIndex,1,[elm[0],e.target.checked])
+                                            return [...tempArr]
+                                        })()
+                                    });
+                                    return [...arr];
+                                })}
+                            />}
                             </Grid>
                             <Grid
                                 className={styles.fieldsBox}
@@ -241,22 +305,64 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                         </Grid>
                     ))}
 
-                    <div className={styles.addFieldBtn}>
-                    <Button
-                        disabled={
-                            sectionData[sectionIndex]?.fields?.some((item)=>item[0] === '') ||
-                            sectionData[sectionIndex]?.fields?.some((filed,i)=>  sectionData[sectionIndex]?.fields?.some((elm,index)=> (elm[0] === filed[0])  && i !== index))
-                        }
-                        onClick={()=>setSectionData((preState)=>{
-                            let arr = preState;
-                                arr.splice(sectionIndex, 1,
-                                    {...item,
-                                        fields: (()=>[...item?.fields,['','']])()
-                                    })
-                            return[...arr];
-                        })}
-                    > Add field</Button>
-                    </div>
+                    <Grid container sx={{margin:'10px 0px 20px 0px'}}>
+                        <Grid
+                            xl={4} lg={4} md={6} sm={12} xs={12} item
+                        >
+                            <div className={styles.addFieldBtn}>
+                                <Button
+                                    disabled={
+                                        sectionData[sectionIndex]?.fields?.some((item)=>item[0] === '') ||
+                                        sectionData[sectionIndex]?.fields?.some((filed,i)=>  sectionData[sectionIndex]?.fields?.some((elm,index)=> (elm[0] === filed[0])  && i !== index))
+                                    }
+                                    onClick={()=>setSectionData((preState)=>{
+                                        let arr = preState;
+                                        arr.splice(sectionIndex, 1,
+                                            {...item,
+                                                fields: (()=>[...item?.fields,['','',appData[currentPage]?.sections[sectionIndex]?.fieldType]])()
+                                            })
+                                        return[...arr];
+                                    })}
+                                > Add field</Button>
+                            </div>
+                        </Grid>
+                        <Grid
+                            xl={4} lg={4} md={6} sm={12} xs={12} item
+                        >
+                            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-helper-label"
+                                    id="demo-simple-select-helper"
+                                    value={appData[currentPage]?.sections[sectionIndex]?.fieldType}
+                                    label="Field Type"
+                                    // onChange={handleChange}
+                                    onChange={(event)=>{
+                                        setSectionData((preState)=>{
+                                            let arr = preState;
+                                            arr.splice(sectionIndex, 1,
+                                                {...item,
+                                                    fieldType : event.target.value,
+                                                })
+                                            return[...arr];
+                                        });
+                                        // setAppData((preState)=>{
+                                        //     let arr = preState;
+                                        //     arr.splice(currentPage,1,{...preState[currentPage], fields:pageData, sections:sectionData, detailsTitle:detailsTitle, fieldType : event.target.value});
+                                        //     console.log("log in app Details",[...arr]);
+                                        //     return [...arr];
+                                        // })
+                                    }}
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value='string'>Text</MenuItem>
+                                    <MenuItem value='boolean'>boolean</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
 
                 </div>
             </div>
@@ -264,7 +370,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
         <div className={styles.addSection}>
         <Button
             disabled={disableCheacker()?.addSection}
-            onClick={()=>setSectionData((preState)=>([...preState,{title:'',fields:[['','']]}]))}
+            onClick={()=>setSectionData((preState)=>([...preState,{title:'',fields:[['','','string']], fieldType: 'string'}]))}
         > Add Section</Button>
         </div>
     </div>

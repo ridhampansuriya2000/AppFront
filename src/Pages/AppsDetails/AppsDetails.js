@@ -74,7 +74,7 @@ const AppsDetails = () =>{
             label: 'Status',
             minWidth: 170,
             align: 'right',
-            format: (value) => value,
+            format: (value) => `${value}`,
         },
         {
             id: 'msg',

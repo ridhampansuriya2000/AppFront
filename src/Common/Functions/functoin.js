@@ -22,12 +22,13 @@ export function convertObjToArray(jsonObj) {
 
                     for (let subSubKey in subValue) {
                         let subSubValue = subValue[subSubKey];
-                        section.fields.push([subSubKey, subSubValue]);
+
+                        section.fields.push([subSubKey, subSubValue, typeof subSubValue]);
                     }
 
                     item.sections.push(section);
                 } else {
-                    item.fields.push([subKey, subValue]);
+                    item.fields.push([subKey, subValue, typeof subValue]);
                 }
             }
         }

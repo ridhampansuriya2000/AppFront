@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 const defualtAppsData = [
     {
         detailsTitle:'App_Details',
-        fields:[['name',''],['status',''],['msg','']],
+        fields:[['name','','string'],['status','','boolean'],['msg','','string']],
+        fieldType : 'string'
     },
 ];
 
@@ -25,7 +26,13 @@ const CustomForm = ({isEdit}) => {
         auth : state.auth
     }));
 
-    const [appData,setAppData] = React.useState(defualtAppsData);
+    const [appData,setAppData] = React.useState([
+        {
+            detailsTitle:'App_Details',
+            fields:[['name','','string'],['status',false,'boolean'],['msg','','string']],
+            fieldType : 'string'
+        },
+    ]);
     const [currentPage,setCurrentPage] = React.useState(0);
     const [isNextDisabled,setIsNextDisabled] = React.useState(false);
 
@@ -42,13 +49,12 @@ const CustomForm = ({isEdit}) => {
                     params : location?.pathname?.split('/')[location?.pathname?.split()?.length + 2],
                 }))
                 let arr = convertObjToArray(data?.apiRes?.lastApiRes?.payload?.appData);
-                console.log("log in isEdit");
                 setAppData(()=>arr);
                 setDetailsTitle(()=>arr[currentPage]?.detailsTitle);
                 setPageData(()=>arr[currentPage]?.fields);
                 setSectionData(()=> arr[currentPage]?.sections);
             }else {
-                setPageData(()=>[['name',''],['status',''],['msg','']]);
+                setPageData(()=>[['name','','string'],['status','','boolean'],['msg','','string']]);
                 setSectionData(()=> []);
                 setDetailsTitle(()=>'App_Details');
             }
@@ -78,8 +84,9 @@ const CustomForm = ({isEdit}) => {
                             setAppData((preState)=>(
                                 [...preState,{
                                     detailsTitle:'',
-                                    fields:[['','']],
-                                    sections:[{title:'',fields:[['','']]}]
+                                    fields:[['','','string']],
+                                    sections:[{title:'',fields:[['','','string']]}],
+                                    fieldType : 'string'
                                 }]
                             ))
                             setCurrentPage((preState)=>preState + 1);
