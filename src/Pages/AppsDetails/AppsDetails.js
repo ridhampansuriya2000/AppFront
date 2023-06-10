@@ -33,7 +33,7 @@ const AppsDetails = () =>{
         await dispatch(deleteAppsDetailsAction({
             params : id
         }));
-        await dispatch(getAppsDataAction());
+        await dispatch(getAppsDataAction({params: createdBy}));
     };
 
     const columns = [

@@ -29,6 +29,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
         setAppData((preState)=>{
             let arr = preState;
             arr.splice(currentPage,1,{...preState[currentPage], fields:pageData, sections:sectionData, detailsTitle:detailsTitle});
+            console.log("log in app Details",[...arr]);
             return [...arr];
         })
         if(

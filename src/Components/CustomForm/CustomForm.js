@@ -8,6 +8,13 @@ import {addAppsDetailsAction, getAppDataAction, updateAppsDetailsAction} from ".
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+const defualtAppsData = [
+    {
+        detailsTitle:'App_Details',
+        fields:[['name',''],['status',''],['msg','']],
+    },
+];
+
 const CustomForm = ({isEdit}) => {
 
     const dispatch = useDispatch();
@@ -16,14 +23,9 @@ const CustomForm = ({isEdit}) => {
 
     const { auth } = useSelector((state)=>({
         auth : state.auth
-    }))
+    }));
 
-    const [appData,setAppData] = React.useState([
-        {
-            detailsTitle:'App_Details',
-            fields:[['name',''],['status',''],['msg','']],
-        },
-    ]);
+    const [appData,setAppData] = React.useState(defualtAppsData);
     const [currentPage,setCurrentPage] = React.useState(0);
     const [isNextDisabled,setIsNextDisabled] = React.useState(false);
 
@@ -40,17 +42,22 @@ const CustomForm = ({isEdit}) => {
                     params : location?.pathname?.split('/')[location?.pathname?.split()?.length + 2],
                 }))
                 let arr = convertObjToArray(data?.apiRes?.lastApiRes?.payload?.appData);
+                console.log("log in isEdit");
                 setAppData(()=>arr);
                 setDetailsTitle(()=>arr[currentPage]?.detailsTitle);
                 setPageData(()=>arr[currentPage]?.fields);
                 setSectionData(()=> arr[currentPage]?.sections);
+            }else {
+                setPageData(()=>[['name',''],['status',''],['msg','']]);
+                setSectionData(()=> []);
+                setDetailsTitle(()=>'App_Details');
             }
         })()
     },[isEdit])
 
     const getPageData = React.useMemo(()=>{
         return appData[currentPage]
-    },[appData.length,currentPage, JSON.parse(JSON.stringify(appData))]);
+    },[appData.length,currentPage]);
 
 
     return (

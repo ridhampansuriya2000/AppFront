@@ -33,7 +33,7 @@ export const routes = [
         title : 'Add App Details',
         icon : <AddToHomeScreenIcon/>,
         path : '/addAppDetails',
-        component: <AddAppDetails/>,
+        component: <AddAppDetails isEdit={false}/>,
         isVisibleOnSidebar : true,
         isNeedAuthenticat : false
     },
