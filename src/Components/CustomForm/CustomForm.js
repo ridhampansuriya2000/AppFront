@@ -8,6 +8,8 @@ import {addAppsDetailsAction, getAppDataAction, updateAppsDetailsAction} from ".
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+import Grid from "@mui/material/Grid";
+
 const defualtAppsData = [
     {
         detailsTitle:'App_Details',
@@ -28,13 +30,7 @@ const CustomForm = ({isEdit}) => {
         auth : state.auth
     }));
 
-    const [appData,setAppData] = React.useState([
-        {
-            detailsTitle:'App_Details',
-            fields:[['name','','string'],['status',false,'boolean'],['msg','','string']],
-            fieldType : 'string'
-        },
-    ]);
+    const [appData,setAppData] = React.useState(defualtAppsData);
     const [currentPage,setCurrentPage] = React.useState(0);
     const [isNextDisabled,setIsNextDisabled] = React.useState(false);
 
@@ -70,8 +66,8 @@ const CustomForm = ({isEdit}) => {
 
     return (
         <div>
-            <div className={styles.buttons}>
-                <div className={styles.pageHandlerButtons}>
+            <Grid container className={styles.buttons} rowSpacing={1}>
+                <Grid item className={styles.pageHandlerButtons}>
                     <Button
                         onClick={()=>{
                             setCurrentPage((preState)=>preState - 1);
@@ -97,9 +93,9 @@ const CustomForm = ({isEdit}) => {
                     >
                         {appData.length - 1 === currentPage ? 'Add Page' : 'Next Page'}
                     </Button>
-                </div>
+                </Grid>
 
-                <div className={styles.formHandlerBtn}>
+                <Grid item className={styles.formHandlerBtn}>
                 <Button
                     disabled={appData.length === 1 || currentPage === 0}
                     onClick={()=>{
@@ -133,8 +129,8 @@ const CustomForm = ({isEdit}) => {
                     >
                         Submit
                     </Button>
-                </div>
-            </div>
+                </Grid>
+            </Grid>
             <AppDetails
                 appData={appData}
                 data={getPageData}

@@ -80,7 +80,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
         </Grid>
         </Grid>
         {pageData?.map((item,index)=>(
-            <Grid spacing={1} container sx={{display:'flex',alignItems:'flex-start', marginTop:'5px'}}>
+            <Grid spacing={1} container sx={{display:'flex',alignItems:'flex-start', marginTop:'5px', paddingRight:'10px'}}>
                 <Grid
                     className={styles.fieldsBox}
                     xl={4} lg={4} md={6} sm={12} xs={12} item
@@ -159,14 +159,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
         <Grid container sx={{margin:'10px 0px 20px 0px'}}>
             <Grid
                 xl={4} lg={4} md={6} sm={12} xs={12} item
-            >
-        <Button
-            disabled={disableCheacker()?.addField || !currentPage}
-            onClick={()=>setPageData((preState)=>([...preState,['',appData[currentPage]?.fieldType === "boolean" ? false : '',appData[currentPage]?.fieldType]]))}
-        > Add field</Button>
-            </Grid>
-            <Grid
-                xl={4} lg={4} md={6} sm={12} xs={12} item
+                sx={{display:'flex',alignItems:'center'}}
             >
                 <Select
                     value={appData[currentPage]?.fieldType}
@@ -174,13 +167,17 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                     onChange={handleChange}
                     options={[{value:'', optionTitle :"Field Type"},{value:'string', optionTitle :"String"},{value:'boolean', optionTitle :"Boolean"},{value:'number', optionTitle :"Number"}]}
                 />
+                <Button
+                    disabled={disableCheacker()?.addField || !currentPage}
+                    onClick={()=>setPageData((preState)=>([...preState,['',appData[currentPage]?.fieldType === "boolean" ? false : '',appData[currentPage]?.fieldType]]))}
+                > Add field</Button>
             </Grid>
         </Grid>
 
         {sectionData?.map((item,sectionIndex)=>(
-            <div style={{borderRight:'2px solid #515989', margin : '10px 0px'}}>
+            <div style={{borderRight:'2px solid #515989', paddingRight:'10px', margin : '10px 0px'}}>
                 <div className={styles.sectionBox}>
-                    <Grid container>
+                    <Grid container rowSpacing={1}>
                         <Grid
                             xl={4} lg={4} md={6} sm={12} xs={12} item
                         >
@@ -214,7 +211,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                             })
                         }}
                     >Delete Section</Button>
-                            </Grid>
+                        </Grid>
                     </Grid>
                 </div>
                 <div >
@@ -331,26 +328,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                     <Grid container sx={{margin:'10px 0px 20px 0px'}}>
                         <Grid
                             xl={4} lg={4} md={6} sm={12} xs={12} item
-                        >
-                            <div className={styles.addFieldBtn}>
-                                <Button
-                                    disabled={
-                                        sectionData[sectionIndex]?.fields?.some((item)=>item[0] === '') ||
-                                        sectionData[sectionIndex]?.fields?.some((filed,i)=>  sectionData[sectionIndex]?.fields?.some((elm,index)=> (elm[0] === filed[0])  && i !== index))
-                                    }
-                                    onClick={()=>setSectionData((preState)=>{
-                                        let arr = preState;
-                                        arr.splice(sectionIndex, 1,
-                                            {...item,
-                                                fields: (()=>[...item?.fields,['',appData[currentPage]?.sections[sectionIndex]?.fieldType === "boolean" ? false : '',appData[currentPage]?.sections[sectionIndex]?.fieldType]])()
-                                            })
-                                        return[...arr];
-                                    })}
-                                > Add field</Button>
-                            </div>
-                        </Grid>
-                        <Grid
-                            xl={4} lg={4} md={6} sm={12} xs={12} item
+                            sx={{display:'flex',alignItems:'center'}}
                         >
                             <Select
                                 label="Field Type"
@@ -367,6 +345,20 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                                 }}
                                 options={[{value:'', optionTitle :"Field Type"},{value:'string', optionTitle :"String"},{value:'boolean', optionTitle :"Boolean"},{value:'number', optionTitle :"Number"}]}
                             />
+                                <Button
+                                    disabled={
+                                        sectionData[sectionIndex]?.fields?.some((item)=>item[0] === '') ||
+                                        sectionData[sectionIndex]?.fields?.some((filed,i)=>  sectionData[sectionIndex]?.fields?.some((elm,index)=> (elm[0] === filed[0])  && i !== index))
+                                    }
+                                    onClick={()=>setSectionData((preState)=>{
+                                        let arr = preState;
+                                        arr.splice(sectionIndex, 1,
+                                            {...item,
+                                                fields: (()=>[...item?.fields,['',appData[currentPage]?.sections[sectionIndex]?.fieldType === "boolean" ? false : '',appData[currentPage]?.sections[sectionIndex]?.fieldType]])()
+                                            })
+                                        return[...arr];
+                                    })}
+                                > Add field</Button>
                         </Grid>
                     </Grid>
 

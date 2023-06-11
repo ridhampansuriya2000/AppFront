@@ -2,7 +2,7 @@
 .buttons{
     display: flex;
     justify-content: space-between;
-    margin: 10px 0px;
+    margin: 10px 0px 50px 0px;
 }
 
 .pageHandlerButtons{
