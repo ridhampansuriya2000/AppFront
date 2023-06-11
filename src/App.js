@@ -63,17 +63,11 @@ function App() {
         <ThemeProvider theme={theme}>
             <Provider store={store}>
             <div className="App">
-                {/*<Layout/>*/}
                 <BrowserRouter>
                     <Routes>
 
                     <Route exact path="/login" element={<SignIn />} />
-                    <Route exact path="/sign-up" element={<SignUp />} />
-                    {/*<PrivateRoute*/}
-                    {/*    routes={routes}*/}
-                    {/*    component={Layout}*/}
-                    {/*/>*/}
-                    {/*    <Route path="/" element={<PrivateRoute element={<Layout />} />} />*/}
+                    {/*<Route exact path="/sign-up" element={<SignUp />} />*/}
                         <Route
                             path="/*"
                             element={
@@ -85,14 +79,7 @@ function App() {
                             }
                         />
 
-                        {/*<PrivateRoute*/}
-                        {/*    path="/*"*/}
-                        {/*    element={Layout}*/}
-                        {/*    routes={routes}*/}
-                        {/*/>*/}
                     </Routes>
-
-                    {/*<Layout routes={routes} />*/}
                 </BrowserRouter>
             </div>
             </Provider>
