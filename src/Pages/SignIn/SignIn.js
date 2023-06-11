@@ -3,7 +3,7 @@ import styles from './SignIn.module.css'
 import TextField from "../../Common/View/TextField";
 import Button from "../../Common/View/Button";
 
-
+import {Box} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormGroup from '@mui/material/FormGroup';
@@ -74,10 +74,12 @@ const SignIn = () =>{
 
     return(
         <div className={styles.container}>
-            <div className={styles.infoContainer}>
+            <Box className={styles.infoContainer} sx={{
+                display : { lg : 'block', md:'none', sm : 'none', xs:'none'}
+            }}>
 
-            </div>
-            <div className={styles.formContainer}>
+            </Box>
+            <Box className={styles.formContainer} sx={{ flex: {md : 1,sm : 1,xs : 1}}}>
                 <div className={styles.formBox}>
                     <div className={styles.headingBox}>
                         <div className={styles.heading3}>Login to </div>
@@ -137,7 +139,7 @@ const SignIn = () =>{
                         Don't have account <span className={styles.linkText} onClick={()=> navigate('/sign-up')}>Sign Up</span>
                     </div>
                 </div>
-            </div>
+            </Box>
         </div>
     )
 }
