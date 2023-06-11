@@ -6,12 +6,8 @@ import styles from './AppDetails.module.css';
 import Grid from "@mui/material/Grid";
 
 
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import IosSwitch from "../../Common/View/IosSwitch";
+import Select from "../../Common/View/Select";
 
 const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, setDetailsTitle, detailsTitle, sectionData, setSectionData, pageData, setPageData}) =>{
     // const [detailsTitle,setDetailsTitle] = React.useState('');
@@ -118,8 +114,23 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                         return [...arr];
                     })}
                 /> :
+                    pageData[index][2] === 'number' ?
+                    <TextField
+                        label="Value"
+                        type="number"
+                        // variant="standard"
+                        fullWidth
+                        value={item[1]}
+                        onChange={(e)=>setPageData((preState)=>{
+                            let val = parseInt((e.target.value).replace(/[^0-9]/g, ''));
+                            let arr = preState;
+                            arr.splice(index, 1, [preState[index][0],val,preState[index][2]]);
+                            return [...arr];
+                        })}
+                    /> :
                 <IosSwitch
-                    value={item[1]}
+                    checked={item[1]}
+                    inputProps={{ 'aria-label': 'controlled' }}
                     onChange={(e)=>setPageData((preState)=>{
                         let arr = preState;
                         arr.splice(index, 1, [preState[index][0],e.target.checked,preState[index][2]]);
@@ -151,28 +162,18 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
             >
         <Button
             disabled={disableCheacker()?.addField || !currentPage}
-            onClick={()=>setPageData((preState)=>([...preState,['','',appData[currentPage]?.fieldType]]))}
+            onClick={()=>setPageData((preState)=>([...preState,['',appData[currentPage]?.fieldType === "boolean" ? false : '',appData[currentPage]?.fieldType]]))}
         > Add field</Button>
             </Grid>
             <Grid
                 xl={4} lg={4} md={6} sm={12} xs={12} item
             >
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
                 <Select
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
                     value={appData[currentPage]?.fieldType}
-                    label="Age"
+                    label="Field Type"
                     onChange={handleChange}
-                >
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value='string'>Text</MenuItem>
-                    <MenuItem value='boolean'>boolean</MenuItem>
-                </Select>
-                </FormControl>
+                    options={[{value:'', optionTitle :"Field Type"},{value:'string', optionTitle :"String"},{value:'boolean', optionTitle :"Boolean"},{value:'number', optionTitle :"Number"}]}
+                />
             </Grid>
         </Grid>
 
@@ -267,15 +268,37 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                                     return [...arr];
                                 })}
                             /> :
+                            item?.fields[fieldIndex][2] === 'number' ?
+                                <TextField
+                                    label="Value"
+                                    type="number"
+                                    // variant="standard"
+                                    fullWidth
+                                    value={elm[1]}
+                                    onChange={(e)=>setSectionData((preState)=>{
+                                        let val = parseInt((e.target.value).replace(/[^0-9]/g, ''));
+                                        let arr = preState;
+                                        arr.splice(sectionIndex, 1, {
+                                            ...preState[sectionIndex],
+                                            fields : (()=>{
+                                                let tempArr = preState[sectionIndex]?.fields;
+                                                tempArr.splice(fieldIndex,1,[elm[0],val,elm[2]])
+                                                return [...tempArr]
+                                            })()
+                                        });
+                                        return [...arr];
+                                    })}
+                                /> :
                             <IosSwitch
-                                value={item[1]}
+                                checked={elm[1]}
+                                inputProps={{ 'aria-label': 'controlled' }}
                                 onChange={(e)=>setSectionData((preState)=>{
                                     let arr = preState;
                                     arr.splice(sectionIndex, 1, {
                                         ...preState[sectionIndex],
                                         fields : (()=>{
                                             let tempArr = preState[sectionIndex]?.fields;
-                                            tempArr.splice(fieldIndex,1,[elm[0],e.target.checked])
+                                            tempArr.splice(fieldIndex,1,[elm[0],e.target.checked,elm[2]])
                                             return [...tempArr]
                                         })()
                                     });
@@ -319,7 +342,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                                         let arr = preState;
                                         arr.splice(sectionIndex, 1,
                                             {...item,
-                                                fields: (()=>[...item?.fields,['','',appData[currentPage]?.sections[sectionIndex]?.fieldType]])()
+                                                fields: (()=>[...item?.fields,['',appData[currentPage]?.sections[sectionIndex]?.fieldType === "boolean" ? false : '',appData[currentPage]?.sections[sectionIndex]?.fieldType]])()
                                             })
                                         return[...arr];
                                     })}
@@ -329,38 +352,21 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                         <Grid
                             xl={4} lg={4} md={6} sm={12} xs={12} item
                         >
-                            <FormControl sx={{ m: 1, minWidth: 120 }}>
-                                <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-helper-label"
-                                    id="demo-simple-select-helper"
-                                    value={appData[currentPage]?.sections[sectionIndex]?.fieldType}
-                                    label="Field Type"
-                                    // onChange={handleChange}
-                                    onChange={(event)=>{
-                                        setSectionData((preState)=>{
-                                            let arr = preState;
-                                            arr.splice(sectionIndex, 1,
-                                                {...item,
-                                                    fieldType : event.target.value,
-                                                })
-                                            return[...arr];
-                                        });
-                                        // setAppData((preState)=>{
-                                        //     let arr = preState;
-                                        //     arr.splice(currentPage,1,{...preState[currentPage], fields:pageData, sections:sectionData, detailsTitle:detailsTitle, fieldType : event.target.value});
-                                        //     console.log("log in app Details",[...arr]);
-                                        //     return [...arr];
-                                        // })
-                                    }}
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value='string'>Text</MenuItem>
-                                    <MenuItem value='boolean'>boolean</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <Select
+                                label="Field Type"
+                                value={appData[currentPage]?.sections[sectionIndex]?.fieldType}
+                                onChange={(event)=>{
+                                    setSectionData((preState)=>{
+                                        let arr = preState;
+                                        arr.splice(sectionIndex, 1,
+                                            {...item,
+                                                fieldType : event.target.value,
+                                            })
+                                        return[...arr];
+                                    });
+                                }}
+                                options={[{value:'', optionTitle :"Field Type"},{value:'string', optionTitle :"String"},{value:'boolean', optionTitle :"Boolean"},{value:'number', optionTitle :"Number"}]}
+                            />
                         </Grid>
                     </Grid>
 
