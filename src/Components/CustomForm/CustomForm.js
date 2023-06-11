@@ -21,6 +21,8 @@ const CustomForm = ({isEdit}) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
+    const searchParams = new URLSearchParams(location.search);
+    const appIdparam = searchParams.get('create-new-copy');
 
     const { auth } = useSelector((state)=>({
         auth : state.auth
@@ -44,9 +46,9 @@ const CustomForm = ({isEdit}) => {
 
     React.useEffect( ()=>{
         (async ()=>{
-            if(isEdit){
+            if(isEdit || appIdparam){
                 let data = await dispatch(getAppDataAction({
-                    params : location?.pathname?.split('/')[location?.pathname?.split()?.length + 2],
+                    params : appIdparam ?? location?.pathname?.split('/')[location?.pathname?.split()?.length + 2],
                 }))
                 let arr = convertObjToArray(data?.apiRes?.lastApiRes?.payload?.appData);
                 setAppData(()=>arr);

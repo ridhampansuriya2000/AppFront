@@ -1,13 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'
-import Table from "../../Common/View/Table";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import styles from './AppsDetails.module.css';
-import {deleteAppsDetailsAction, getAppsDataAction} from "../../Store/actions/appsDataAction";
 import {useDispatch, useSelector} from "react-redux";
 import {BASE_URL} from "../../utils/api/config";
+import {deleteAppsDetailsAction, getAppsDataAction} from "../../Store/actions/appsDataAction";
+import Table from "../../Common/View/Table";
+
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import DifferenceIcon from '@mui/icons-material/Difference';
+import styles from './AppsDetails.module.css';
 
 function modifyData(data) {
     return data.map((item)=>{
@@ -44,7 +46,7 @@ const AppsDetails = () =>{
         },
         {
             id: '_id',
-            label: 'App Id',
+            label: 'App Details API',
             minWidth: 100,
             align: 'right',
             format: (value,index) => (
@@ -72,7 +74,7 @@ const AppsDetails = () =>{
         {
             id: 'status',
             label: 'Status',
-            minWidth: 170,
+            minWidth: 30,
             align: 'right',
             format: (value) => `${value}`,
         },
@@ -85,13 +87,24 @@ const AppsDetails = () =>{
         },
         {
             id: '_id',
-            label: 'Action',
-            minWidth: 170,
+            label: 'Create Duplicat',
+            minWidth: 20,
             align: 'right',
-            format: (value) => (<span>
-            <EditIcon onClick={()=> navigate(`/appsDetails/edit/${value}`)}/>
-        <DeleteIcon onClick={()=>deleteApp(value)}/>
-        </span>),
+            format: (value) => (
+                <span>
+                <DifferenceIcon onClick={()=> navigate(`/addAppDetails?create-new-copy=${value}`)}/>
+                </span>),
+        },
+        {
+            id: '_id',
+            label: 'Action',
+            minWidth: 30,
+            align: 'right',
+            format: (value) => (
+                <span>
+                <EditIcon onClick={()=> navigate(`/appsDetails/edit/${value}`)}/>
+                <DeleteIcon onClick={()=>deleteApp(value)}/>
+                </span>),
         },
     ];
 
