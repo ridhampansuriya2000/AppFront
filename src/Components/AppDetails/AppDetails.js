@@ -164,6 +164,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
                 <Select
                     value={appData[currentPage]?.fieldType}
                     label="Field Type"
+                    disabled={disableCheacker()?.addField || !currentPage}
                     onChange={handleChange}
                     options={[{value:'', optionTitle :"Field Type"},{value:'string', optionTitle :"String"},{value:'boolean', optionTitle :"Boolean"},{value:'number', optionTitle :"Number"}]}
                 />
