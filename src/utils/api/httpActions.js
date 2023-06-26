@@ -20,7 +20,8 @@ const httpActions = (e) => next => async action => {
         type,
         body,
         accessAndContentHeaders=true,
-        callBackFun = async (data)=> await data
+        callBackFun = async (data)=> await data,
+        fallBackFun = async (data)=> await data
     } = action;
     const authKey = localStorage.getItem("token");
 
@@ -75,6 +76,7 @@ const httpActions = (e) => next => async action => {
             });
         } catch (e) {
             const {response} = e;
+            let res = await fallBackFun(e);
             console.error('Error : got in httpsAction',e);
             if (toasterId) await toast.update(toasterId, {
                 type: 'error',

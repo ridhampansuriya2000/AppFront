@@ -44,5 +44,5 @@ export const refreshUserAction = data =>({
     url: `/auth/user/me`,
     method: 'GET',
     accessAndContentHeaders:true,
-    // callBackFun: data.callBackFun
+    fallBackFun: data.fallBackFun
 });
