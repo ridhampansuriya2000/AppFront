@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useLocation} from "react-router";
+import {useLocation, useNavigate} from "react-router";
 import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 import {refreshUserAction} from "../Store/actions/authAction";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,6 +14,7 @@ const Layout = ({routes}) => {
     const dispatch = useDispatch();
     const isMobile = useMediaQuery((theme) => theme?.breakpoints.down('lg'));
     const location = useLocation();
+    const navigate = useNavigate();
 
     const {loaderStatus} = useSelector((state) => ({
         loaderStatus: state.loader.status,
@@ -34,7 +35,10 @@ const Layout = ({routes}) => {
     const [mounted, setMounted] = useState(false)
     console.log("mounted", mounted)
     if (!mounted) {
-        (async  ()=> await dispatch(refreshUserAction()))()
+        (async  ()=> await dispatch(refreshUserAction({fallBackFun : ()=>{
+            localStorage.removeItem('token');
+            navigate('/login');
+        }})))()
         setMounted(true)
         // Code for componentWillMount here
         // This code is called only one time before intial render
