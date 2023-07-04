@@ -83,7 +83,7 @@ const CustomForm = ({isEdit}) => {
                                 [...preState,{
                                     detailsTitle:'',
                                     fields:[['','','string']],
-                                    sections:[{title:'',fields:[['','','string']]}],
+                                    sections:[{title:'',fields:[['','','string']], fieldType:'string'}],
                                     fieldType : 'string'
                                 }]
                             ))

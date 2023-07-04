@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {BASE_URL} from "../../utils/api/config";
 import {deleteAppsDetailsAction, getAppsDataAction} from "../../Store/actions/appsDataAction";
@@ -12,28 +12,30 @@ import DifferenceIcon from '@mui/icons-material/Difference';
 import styles from './AppsDetails.module.css';
 
 function modifyData(data) {
-    return data.map((item)=>{
-        return {...item?.appData?.App_Details, _id : item?._id}
+    return data.map((item) => {
+        return {...item?.appData?.App_Details, _id: item?._id}
     })
 }
 
-const AppsDetails = () =>{
+const AppsDetails = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {userId} = useParams();
 
-    const { appsData, createdBy } = useSelector( (state) => ({
+    const {appsData, createdBy, role} = useSelector((state) => ({
         appsData: state.appsData?.data,
-        createdBy : state?.auth?.user?._id,
+        createdBy: state?.auth?.user?._id,
+        role: state?.auth?.user?.role,
     }));
 
-    React.useEffect(()=>{
-        if(createdBy) dispatch(getAppsDataAction({params: createdBy}))
-    },[createdBy]);
+    React.useEffect(() => {
+        if (createdBy || userId) dispatch(getAppsDataAction({params: role === 'admin' ? userId ?? createdBy : createdBy}))
+    }, [createdBy,userId]);
 
-    const deleteApp = async (id) =>{
+    const deleteApp = async (id) => {
         await dispatch(deleteAppsDetailsAction({
-            params : id
+            params: id
         }));
         await dispatch(getAppsDataAction({params: createdBy}));
     };
@@ -49,17 +51,17 @@ const AppsDetails = () =>{
             label: 'App Details API',
             minWidth: 100,
             align: 'right',
-            format: (value,index) => (
+            format: (value, index) => (
                 <div>
-                    {value?.slice(0,16) + '...'}
+                    {value?.slice(0, 16) + '...'}
                     <span
                         class={styles.tooltip}
-                        onClick={()=>{
+                        onClick={() => {
                             navigator.clipboard.writeText(`${BASE_URL}app/appDetails/${value}`);
                             let tooltip = document.getElementById(`myTooltip${index}`);
                             tooltip.innerHTML = "Copied ";
                         }}
-                        onMouseOut={()=>{
+                        onMouseOut={() => {
                             var tooltip = document.getElementById(`myTooltip${index}`);
                             tooltip.innerHTML = "Copy to clipboard";
                         }}>
@@ -92,7 +94,7 @@ const AppsDetails = () =>{
             align: 'right',
             format: (value) => (
                 <span>
-                <DifferenceIcon onClick={()=> navigate(`/addAppDetails?create-new-copy=${value}`)}/>
+                <DifferenceIcon onClick={() => navigate(`/addAppDetails?create-new-copy=${value}`)}/>
                 </span>),
         },
         {
@@ -102,14 +104,14 @@ const AppsDetails = () =>{
             align: 'right',
             format: (value) => (
                 <span>
-                <EditIcon onClick={()=> navigate(`/appsDetails/edit/${value}`)}/>
-                <DeleteIcon onClick={()=>deleteApp(value)}/>
+                <EditIcon onClick={() => navigate(`/appsDetails/edit/${value}`)}/>
+                <DeleteIcon onClick={() => deleteApp(value)}/>
                 </span>),
         },
     ];
 
     return (
-        <div >
+        <div>
             <Table columns={columns} rows={modifyData(appsData)}/>
         </div>
     )

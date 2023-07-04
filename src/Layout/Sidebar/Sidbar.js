@@ -9,8 +9,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import styles from './Sidebar.module.css';
-import {bottomRoutes, routes} from '../../Routes/Routes';
-import {Outlet, Link, useLocation, useNavigate} from "react-router-dom";
+import {bottomRoutes} from '../../Routes/Routes';
+import { Link, useNavigate } from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 import Logout from "@mui/material/SvgIcon/SvgIcon";
 import {logOutAction} from "../../Store/actions/authAction";
@@ -18,7 +18,7 @@ import {useDispatch} from "react-redux";
 
 const DRAWER_WIDTH = 300;
 
-const RenderContent = ({isOpenSidebar, location, onCloseSidebar}) => {
+const RenderContent = ({isOpenSidebar, location, onCloseSidebar, routes}) => {
     return (
         <Box sx={{color:'#e4e8ff', marginTop:'30px'}}>
             {/*<Divider />*/}
@@ -223,6 +223,7 @@ const Sidebar = ({isOpenSidebar, onCloseSidebar, ...childProps}) => {
                         currentRoute = {location?.pathname}
                         location={location}
                         onCloseSidebar={onCloseSidebar}
+                        routes={childProps.routes}
                     />
                 </span>
                 <SidebarBottomContent
@@ -239,6 +240,7 @@ const Sidebar = ({isOpenSidebar, onCloseSidebar, ...childProps}) => {
                     isOpenSidebar={isOpenSidebar}
                     currentRoute = {location?.pathname}
                     location={location}
+                    routes={childProps.routes}
                 />
             </LeftDrawer>}
         </div>
