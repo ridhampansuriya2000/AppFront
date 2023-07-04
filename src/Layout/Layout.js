@@ -32,17 +32,17 @@ const Layout = ({routes}) => {
     //     dispatch(refreshUserAction())
     // }
 
-    const [mounted, setMounted] = useState(false)
-    console.log("mounted", mounted)
-    if (!mounted) {
-        (async  ()=> await dispatch(refreshUserAction({fallBackFun : ()=>{
-            localStorage.removeItem('token');
-            navigate('/login');
-        }})))()
-        setMounted(true)
-        // Code for componentWillMount here
-        // This code is called only one time before intial render
-    }
+    // const [mounted, setMounted] = useState(false)
+    // console.log("mounted", mounted)
+    // if (!mounted) {
+    //     (async  ()=> await dispatch(refreshUserAction({fallBackFun : ()=>{
+    //         localStorage.removeItem('token');
+    //         navigate('/login');
+    //     }})))()
+    //     setMounted(true)
+    //     // Code for componentWillMount here
+    //     // This code is called only one time before intial render
+    // }
 
     return (
         <div className={styles.main}>

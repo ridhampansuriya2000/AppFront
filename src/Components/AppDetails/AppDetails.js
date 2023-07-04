@@ -9,13 +9,11 @@ import Grid from "@mui/material/Grid";
 import IosSwitch from "../../Common/View/IosSwitch";
 import Select from "../../Common/View/Select";
 
-const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, setDetailsTitle, detailsTitle, sectionData, setSectionData, pageData, setPageData}) =>{
+const   AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, setDetailsTitle, detailsTitle, sectionData, setSectionData, pageData, setPageData}) =>{
     // const [detailsTitle,setDetailsTitle] = React.useState('');
     // const [pageData,setPageData] = React.useState(data?.fields);
     // const [sectionData,setSectionData] = React.useState(data?.sections ?? []);
-    const [age, setAge] = React.useState('');
     const handleChange = (event) => {
-        setAge(event.target.value);
         setAppData((preState)=>{
             let arr = preState;
             arr.splice(currentPage,1,{...preState[currentPage], fields:pageData, sections:sectionData, detailsTitle:detailsTitle, fieldType : event.target.value});
@@ -369,7 +367,7 @@ const AppDetails = ({appData, data, setAppData, currentPage, setIsNextDisabled, 
         <div className={styles.addSection}>
         <Button
             disabled={disableCheacker()?.addSection}
-            onClick={()=>setSectionData((preState)=>([...preState,{title:'',fields:[['','','string']], fieldType: 'string'}]))}
+            onClick={()=>setSectionData((preState)=>([...preState,{title:'',fields:[['','','string']], fieldType:'string'}]))}
         > Add Section</Button>
         </div>
     </div>
